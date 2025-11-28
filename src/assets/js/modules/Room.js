@@ -404,6 +404,7 @@ export default class Room {
                     //this.switchVideoLayout();
                     this.jitsiApiClient.executeCommand(this.commands[name], args);
                     break;
+                case 'toggle-subtitles':
                 case 'toggle-audio':
                 case 'toggle-video':
                 case 'toggle-chat':

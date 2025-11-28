@@ -53,7 +53,7 @@ Available parameters:
 | shortcuts.toggle-chat          | Show / hide chat'                                             |           |  string | c             |
 | shortcuts.toggle-tile-view     | Show / hide tile view                                         |           |  string | w             |
 | shortcuts.toggle-raise-hand    | raise / down hand                                             |           |  string | r             |
-| shortcuts.toggle-tts           | Enable / disable TTS (Text To Speech)                         |           |  string | x             |
+| shortcuts.toggle-subtitles           | Enable / disable TTS (Text To Speech)                         |           |  string | x             |
 
 >> Note: about tts.engine
 > 

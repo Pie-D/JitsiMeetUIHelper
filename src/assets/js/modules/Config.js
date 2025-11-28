@@ -41,7 +41,7 @@ export default class Config {
             "toggle-chat": "c",
             "toggle-tile-view": "w",
             "toggle-raise-hand": "r",
-            "toggle-tts": "x"
+            "toggle-subtitles": "x"
         }
     };
 

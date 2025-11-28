@@ -88,7 +88,7 @@ export default class JitsiMeetUIHelper {
         'toggle-chat': 'toggleChat',
         'toggle-tile-view': 'toggleTileView',
         'toggle-raise-hand': 'toggleRaiseHand',
-        'toggle-tts': 'toggleTts',
+        'toggle-subtitles': 'toggleSubtitles',
         'toggle-share-screen': 'toggleShareScreen',
         'toggle-lobby': 'toggleLobby',
         'toggle-participants-pane': 'toggleParticipantsPane',
@@ -239,7 +239,7 @@ export default class JitsiMeetUIHelper {
         this.room.initJitsiMeetConference().then(function () {
             context.webconference_interface_inited = true;
             if(!Config.get("disable_menu")) {
-                // context.#toggleMenu(true, true);
+                context.#toggleMenu(true, true);
                 document.getElementById('dtmf_show_menu').classList.remove('hidden')
             }
             // Translate menu elements
@@ -262,7 +262,7 @@ export default class JitsiMeetUIHelper {
             document.getElementById("mute-everyone_action")
                 .innerText = Lang.translate('mute-everyone_action');
         }).catch(function () {
-            // context.#toggleMenu(false, false);
+            context.#toggleMenu(false, false);
             document.getElementById('dtmf_show_menu').classList.add('hidden')
         });
     }
@@ -286,22 +286,10 @@ export default class JitsiMeetUIHelper {
             console.log(`Received command: ${name}`);
             switch (name) {
                 case 'show-dtmf-menu':
-                    // this.#toggleMenu();
+                    this.#toggleMenu();
                     return;
 
-                case 'toggle-tts':
-                    if (TTS.available('ui_helper')){
-                        Config.set('tts.ui_helper.speaker_on', !Config.get('tts.ui_helper.speaker_on'));
-                    }else{
-                        console.error(`[Error] Command {${name}} not available`)
-                    }
-                    break;
-
-                case 'toggle-lobby':
-                 //   this.toggleLobbyNotification();
-                    this.room.executeCommand(name, args);
-                    break;
-
+                case 'toggle-subtitles':
                 case 'toggle-audio':
                 case 'toggle-video':
                 case 'toggle-chat':
@@ -329,44 +317,44 @@ export default class JitsiMeetUIHelper {
      * @param forceShow True to force showing menu
      * @param silent True to force not use TTS
      */
-    // #toggleMenu(forceShow = false, silent = false) {
-    //     if (forceShow || !this.dtmfMenu.classList.contains('show')) {
-    //         this.dtmfMenu.classList.remove('hide');
-    //         this.dtmfMenu.classList.add('show');
+    #toggleMenu(forceShow = false, silent = false) {
+        if (forceShow || !this.dtmfMenu.classList.contains('show')) {
+            this.dtmfMenu.classList.remove('hide');
+            this.dtmfMenu.classList.add('show');
 
-    //         // TTS
-    //         if (!silent && Config.get('tts.ui_helper.speaker_on'))
-    //             this.speak('menu_shown');
+            // TTS
+            if (!silent && Config.get('tts.ui_helper.speaker_on'))
+                this.speak('menu_shown');
 
-    //         let context = this;
-    //         if (this.menuTimer === null) this.menuTimer = Config.get('auto_hide_menu_timer');
+            let context = this;
+            if (this.menuTimer === null) this.menuTimer = Config.get('auto_hide_menu_timer');
 
-    //         this.menuInterval = setInterval(function () {
-    //             if (context.menuTimer <= 0) {
-    //                 context.#toggleMenu();
-    //                 clearInterval(context.menuInterval);
-    //                 context.menuTimer = Config.get('auto_hide_menu_timer');
-    //             } else {
-    //                 context.menuTimer--;
-    //             }
-    //         }, 1000);
+            this.menuInterval = setInterval(function () {
+                if (context.menuTimer <= 0) {
+                    context.#toggleMenu();
+                    clearInterval(context.menuInterval);
+                    context.menuTimer = Config.get('auto_hide_menu_timer');
+                } else {
+                    context.menuTimer--;
+                }
+            }, 1000);
 
-    //     } else {
-    //         this.dtmfMenu.classList.remove('show');
-    //         this.dtmfMenu.classList.add('hide');
+        } else {
+            this.dtmfMenu.classList.remove('show');
+            this.dtmfMenu.classList.add('hide');
 
-    //         // TTS
-    //         if (!silent && Config.get('tts.ui_helper.speaker_on'))
-    //             this.speak('menu_hidden');
+            // TTS
+            if (!silent && Config.get('tts.ui_helper.speaker_on'))
+                this.speak('menu_hidden');
 
-    //         this.menuTimer = null;
-    //         if (this.menuInterval !== null) {
-    //             clearInterval(this.menuInterval);
-    //             this.menuInterval = null;
-    //             this.menuTimer = Config.get('auto_hide_menu_timer');
-    //         }
-    //     }
-    // }
+            this.menuTimer = null;
+            if (this.menuInterval !== null) {
+                clearInterval(this.menuInterval);
+                this.menuInterval = null;
+                this.menuTimer = Config.get('auto_hide_menu_timer');
+            }
+        }
+    }
 
 
 /**
